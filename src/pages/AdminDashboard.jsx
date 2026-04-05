@@ -170,9 +170,11 @@ export default function AdminDashboard() {
         </nav>
 
         <div style={{ padding: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-          <Link to="/" style={{ color: '#C9A84C', textDecoration: 'none', fontWeight: '900', fontSize: '0.85rem' }}>
-            ← KE HALAMAN DEPAN
-          </Link>
+        <Link to="/" className="nav-logo">
+          {/* LOGO ASLI + TEKS ARRIVAR */}
+          <img src="/logo.png" alt="ARRIVAR Logo" style={{ height: '34px', width: 'auto', objectFit: 'contain' }} />
+          <span>ARRIVAR<em>.id</em></span>
+        </Link>
         </div>
       </aside>
 

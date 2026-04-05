@@ -76,8 +76,10 @@ export default function Catalog() {
       </Helmet>
 
       <nav style={{ position: 'sticky', top: 0, background: '#FFF', borderBottom: '1px solid rgba(201,168,76,0.2)', padding: '1rem 5vw', zIndex: 100, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#1B2A4A', fontWeight: 'bold', fontFamily: "'Cormorant Garamond', serif", fontSize: '1.4rem' }}>
-          <img src="/logo.png" alt="Logo" style={{ height: '30px' }} /> ARRIVAR<em style={{ fontStyle: 'normal', color: '#C9A84C' }}>.id</em>
+        <Link to="/" className="nav-logo">
+          {/* LOGO ASLI + TEKS ARRIVAR */}
+          <img src="/logo.png" alt="ARRIVAR Logo" style={{ height: '34px', width: 'auto', objectFit: 'contain' }} />
+          <span>ARRIVAR<em>.id</em></span>
         </Link>
       </nav>
 

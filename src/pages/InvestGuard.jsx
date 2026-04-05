@@ -71,17 +71,10 @@ export default function InvestGuard() {
 
       {/* NAVBAR */}
       <nav id="navbar" className={isScrolled ? 'scrolled' : ''} style={{ background: isScrolled ? 'rgba(15,26,48,0.95)' : 'transparent', borderBottom: isScrolled ? '1px solid rgba(201,168,76,0.15)' : 'none' }}>
-        <Link to="/" className="nav-logo" style={{ color: '#FFF' }}>
-          <svg width="34" height="34" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="60,10 15,100 40,100 60,55 80,100 105,100" fill="url(#ng)"/>
-            <line x1="35" y1="75" x2="90" y2="35" stroke="url(#ng2)" strokeWidth="10" strokeLinecap="round"/>
-            <polygon points="90,35 75,38 88,50" fill="url(#ng)"/>
-            <defs>
-              <linearGradient id="ng" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#C9A84C"/><stop offset="100%" stopColor="#E2C878"/></linearGradient>
-              <linearGradient id="ng2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#C9A84C"/><stop offset="100%" stopColor="#E2C878"/></linearGradient>
-            </defs>
-          </svg>
-          <span style={{ color: '#FFF' }}>ARRIVAR<em style={{ fontStyle: 'normal', color: '#C9A84C' }}>.id</em></span>
+        <Link to="/" className="nav-logo">
+          {/* LOGO ASLI + TEKS ARRIVAR */}
+          <img src="/logo.png" alt="ARRIVAR Logo" style={{ height: '34px', width: 'auto', objectFit: 'contain' }} />
+          <span>ARRIVAR<em>.id</em></span>
         </Link>
         <ul className="nav-links">
           <li><Link to="/" style={{ color: '#FFF' }}>Beranda</Link></li>

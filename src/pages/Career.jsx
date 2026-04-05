@@ -40,7 +40,8 @@ export default function Career() {
       {/* NAVBAR */}
       <nav id="navbar" className={isScrolled ? 'scrolled' : ''}>
         <Link to="/" className="nav-logo">
-          <img src="/logo.png" alt="ARRIVAR Icon" style={{ height: '34px', width: 'auto' }} />
+          {/* LOGO ASLI + TEKS ARRIVAR */}
+          <img src="/logo.png" alt="ARRIVAR Logo" style={{ height: '34px', width: 'auto', objectFit: 'contain' }} />
           <span>ARRIVAR<em>.id</em></span>
         </Link>
         <ul className="nav-links">
