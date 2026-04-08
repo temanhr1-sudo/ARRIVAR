@@ -8,9 +8,10 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState('catalog'); 
 
+  // PERUBAHAN: Tambah field access_type dan access_link
   const [showAddForm, setShowAddForm] = useState(false);
   const [newProduct, setNewProduct] = useState({ 
-    name: '', price: '', category: 'Produk Digital', emoji: '📊', description: '', image_url: '' 
+    name: '', price: '', category: 'Produk Digital', emoji: '📊', description: '', image_url: '', access_type: 'File Publik', access_link: ''
   });
 
   // DAFTAR IKON DROPDOWN
@@ -27,6 +28,24 @@ export default function AdminDashboard() {
     { label: 'Pendidikan', value: '🎓' },
     { label: 'Teknologi', value: '🖥️' }
   ];
+
+  // FUNGSI PEMBANTU UNTUK RENDER SVG MINIMALIS BERDASARKAN EMOJI
+  const renderSVGIcon = (emoji, size = 32, color = '#C9A84C') => {
+    const svgProps = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: color, strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" };
+    switch (emoji) {
+      case '📈': return <svg {...svgProps}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>;
+      case '💰': return <svg {...svgProps}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M8 11l3 3 5-5"></path></svg>;
+      case '🚀': return <svg {...svgProps}><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>;
+      case '📖': return <svg {...svgProps}><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>;
+      case '💼': return <svg {...svgProps}><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>;
+      case '🏢': return <svg {...svgProps}><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path></svg>;
+      case '💡': return <svg {...svgProps}><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.2 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>;
+      case '🛠️': return <svg {...svgProps}><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>;
+      case '🎓': return <svg {...svgProps}><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>;
+      case '🖥️': return <svg {...svgProps}><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>;
+      case '📊': default: return <svg {...svgProps}><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>;
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -53,7 +72,7 @@ export default function AdminDashboard() {
     if (error) alert('Gagal: ' + error.message);
     else {
       setShowAddForm(false);
-      setNewProduct({ name: '', price: '', category: 'Produk Digital', emoji: '📊', description: '', image_url: '' });
+      setNewProduct({ name: '', price: '', category: 'Produk Digital', emoji: '📊', description: '', image_url: '', access_type: 'File Publik', access_link: '' });
       fetchData();
     }
   }
@@ -62,6 +81,20 @@ export default function AdminDashboard() {
     if (window.confirm('Hapus produk ini secara permanen?')) {
       await supabase.from('products').delete().eq('id', id);
       fetchData();
+    }
+  }
+
+  // 🟢 FUNGSI BARU: Manual Approve Order dari Tabel Admin
+  async function approveOrder(id) {
+    if (window.confirm('Verifikasi pembayaran dan kirim akses ke user ini?')) {
+      const { error } = await supabase.from('orders').update({ status: 'approved' }).eq('id', id);
+      if (error) {
+        alert('Gagal Approve: ' + error.message);
+      } else {
+        fetchData();
+        // Opsi: Jika ingin men-trigger pengiriman Email notifikasi, panggil endpoint Vercel-mu di sini
+        // await fetch('https://arrivar.id/api/send-access-email', { method: 'POST', body: JSON.stringify({ order_id: id }) });
+      }
     }
   }
 
@@ -156,7 +189,7 @@ export default function AdminDashboard() {
             ARRIVAR<span style={{ color: '#C9A84C' }}>.id</span>
           </h2>
           <p style={{ color: '#8B95A8', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '2px', marginTop: '10px', fontWeight: 800 }}>
-             Management Console
+              Management Console
           </p>
         </div>
 
@@ -170,10 +203,12 @@ export default function AdminDashboard() {
         </nav>
 
         <div style={{ padding: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <Link to="/" className="nav-logo">
-          {/* LOGO ASLI + TEKS ARRIVAR */}
-          <img src="/logo.png" alt="ARRIVAR Logo" style={{ height: '34px', width: 'auto', objectFit: 'contain' }} />
-          <span>ARRIVAR<em>.id</em></span>
+        <Link to="/" className="nav-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#FFF' }}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold, #D4AF37)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 22L12 2l8 20"></path>
+            <path d="M8 14h8"></path>
+          </svg>
+          <span>ARRIVAR<em style={{ color: '#C9A84C', fontStyle: 'normal' }}>.id</em></span>
         </Link>
         </div>
       </aside>
@@ -199,7 +234,7 @@ export default function AdminDashboard() {
           )}
         </div>
 
-        {/* FORM TAMBAH PRODUK DENGAN DROPDOWN IKON */}
+        {/* FORM TAMBAH PRODUK DENGAN DROPDOWN IKON & AKSES */}
         {showAddForm && view === 'catalog' && (
           <div style={{ background: '#FFF', padding: '2.5rem', borderRadius: '15px', marginBottom: '2.5rem', border: '2px solid #C9A84C', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
             <h3 style={{ marginBottom: '2rem', color: '#0B1426', borderBottom: '1px solid #EEE', paddingBottom: '1rem', fontFamily: 'serif', fontSize: '1.5rem' }}>Input Produk Baru</h3>
@@ -225,9 +260,32 @@ export default function AdminDashboard() {
                 </select>
               </div>
               <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: '900', color: '#0B1426' }}>FILE GAMBAR (/PUBLIC)</label>
-                <input style={styles.input} value={newProduct.image_url} onChange={e => setNewProduct({...newProduct, image_url: e.target.value})} placeholder="foto.png" />
+                <label style={{ fontSize: '0.75rem', fontWeight: '900', color: '#0B1426' }}>FILE GAMBAR TAMPILAN (/PUBLIC)</label>
+                <input style={styles.input} value={newProduct.image_url} onChange={e => setNewProduct({...newProduct, image_url: e.target.value})} placeholder="foto.png (Opsional)" />
               </div>
+              
+              {/* PERUBAHAN: Field Khusus Akses Produk */}
+              <div>
+                <label style={{ fontSize: '0.75rem', fontWeight: '900', color: '#0B1426' }}>TIPE AKSES PRODUK</label>
+                <select 
+                  style={{ ...styles.input, background: '#FFF', borderColor: '#C9A84C' }} 
+                  value={newProduct.access_type} 
+                  onChange={e => setNewProduct({...newProduct, access_type: e.target.value})}
+                >
+                  <option value="File Publik">File Tersimpan di Publik</option>
+                  <option value="Link Eksternal">Link (Kelas / Jasa / GDrive)</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ fontSize: '0.75rem', fontWeight: '900', color: '#0B1426' }}>NAMA FILE / LINK AKSES</label>
+                <input 
+                  style={{ ...styles.input, borderColor: '#C9A84C' }} 
+                  value={newProduct.access_link} 
+                  onChange={e => setNewProduct({...newProduct, access_link: e.target.value})} 
+                  placeholder={newProduct.access_type === 'File Publik' ? 'Contoh: template.pdf' : 'Contoh: https://zoom.us/xyz'} 
+                />
+              </div>
+
             </div>
             <div style={{marginTop: '1.5rem'}}>
               <label style={{ fontSize: '0.75rem', fontWeight: '900', color: '#0B1426' }}>DESKRIPSI PRODUK</label>
@@ -260,12 +318,14 @@ export default function AdminDashboard() {
                             {p.image_url ? (
                               <img src={`/${p.image_url}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             ) : (
-                              <span style={{ fontSize: '1.8rem' }}>{p.emoji}</span>
+                              renderSVGIcon(p.emoji, 32, '#0B1426')
                             )}
                           </div>
                           <div>
                             <div style={{ fontWeight: '900', color: '#0B1426', fontSize: '1.1rem' }}>{p.name}</div>
-                            <div style={{ fontSize: '0.7rem', color: '#C9A84C', fontWeight: '900', textTransform: 'uppercase' }}>{p.category}</div>
+                            <div style={{ fontSize: '0.7rem', color: '#C9A84C', fontWeight: '900', textTransform: 'uppercase' }}>
+                              {p.category} • {p.access_type || 'Akses Default'}
+                            </div>
                           </div>
                         </div>
                       </td>
@@ -285,9 +345,21 @@ export default function AdminDashboard() {
                       <td style={{ padding: '1.5rem 2.5rem' }}>
                         <div style={{ fontWeight: '900', color: '#0B1426' }}>{o.product_name}</div>
                         <div style={{ fontSize: '0.8rem', color: '#C9A84C', fontWeight: '900' }}>{new Date(o.created_at).toLocaleDateString('id-ID')}</div>
+                        {/* Status dari Database */}
+                        <div style={{ fontSize: '0.75rem', marginTop: '5px', padding: '2px 8px', borderRadius: '4px', display: 'inline-block', background: o.status === 'approved' ? '#DCFCE7' : '#FEF9C3', color: o.status === 'approved' ? '#166534' : '#854D0E', fontWeight: 'bold' }}>
+                          {o.status === 'approved' ? 'Disetujui' : 'Menunggu Pembayaran'}
+                        </div>
                       </td>
                       <td style={{ padding: '1.5rem 2.5rem', textAlign: 'center' }}>
-                        <a href={`https://wa.me/${o.customer_phone?.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" style={{ background: '#22C55E', color: '#FFF', padding: '0.8rem 1.5rem', borderRadius: '8px', textDecoration: 'none', fontWeight: '900', fontSize: '0.8rem', display: 'inline-block' }}>WHATSAPP</a>
+                        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                          <a href={`https://wa.me/${o.customer_phone?.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" style={{ background: '#22C55E', color: '#FFF', padding: '0.8rem 1.5rem', borderRadius: '8px', textDecoration: 'none', fontWeight: '900', fontSize: '0.8rem', display: 'inline-block' }}>WHATSAPP</a>
+                          {/* 🟢 TOMBOL APPROVE KHUSUS JIKA STATUS MASIH PENDING */}
+                          {o.status !== 'approved' && (
+                            <button onClick={() => approveOrder(o.id)} style={{ background: '#0B1426', color: '#C9A84C', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '8px', fontWeight: '900', fontSize: '0.8rem', cursor: 'pointer' }}>
+                              ✅ APPROVE
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))

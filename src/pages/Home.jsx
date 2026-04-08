@@ -96,27 +96,48 @@ export default function Home() {
           <p className="section-body">ARRIVAR hadir sebagai ekosistem holistik yang menjembatani kesenjangan antara kompetensi profesional, kemandirian finansial, dan pertumbuhan bisnis inovatif.</p>
         </div>
         <div className="pillars-grid">
+          
           <div className="pillar reveal">
             <span className="pillar-num">01</span>
-            <div className="pillar-icon">📈</div>
+            <div className="pillar-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '16px', background: 'var(--navy, #111827)', marginBottom: '1.5rem', boxShadow: '0 4px 14px rgba(212, 175, 55, 0.15)' }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold, #D4AF37)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+              </svg>
+            </div>
             <h3>Career Accelerator</h3>
             <p>Mentoring, pengembangan skill, dan optimalisasi SDM untuk mencetak profesional yang berdaya saing tinggi di era modern.</p>
             <div className="pillar-tag">Career Development & HR</div>
           </div>
+          
           <div className="pillar reveal">
             <span className="pillar-num">02</span>
-            <div className="pillar-icon">💰</div>
+            <div className="pillar-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '16px', background: 'var(--navy, #111827)', marginBottom: '1.5rem', boxShadow: '0 4px 14px rgba(212, 175, 55, 0.15)' }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold, #D4AF37)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <path d="M8 11l3 3 5-5"></path>
+              </svg>
+            </div>
             <h3>Financial Ecosystem</h3>
             <p>Platform cerdas berbasis AI untuk literasi, manajemen risiko, dan wealth forecasting. Termasuk <strong>InvestGuard</strong> — aplikasi finansial unggulan kami.</p>
             <div className="pillar-tag">FinTech & InvestGuard</div>
           </div>
+          
           <div className="pillar reveal">
             <span className="pillar-num">03</span>
-            <div className="pillar-icon">🚀</div>
+            <div className="pillar-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '16px', background: 'var(--navy, #111827)', marginBottom: '1.5rem', boxShadow: '0 4px 14px rgba(212, 175, 55, 0.15)' }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold, #D4AF37)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+                <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+                <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+                <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+              </svg>
+            </div>
             <h3>Startup Funding</h3>
             <p>Inkubasi bisnis dan fasilitasi akses modal ventura. Mendampingi startup potensial hingga terhubung dengan investor yang tepat.</p>
             <div className="pillar-tag">Inkubasi & Pendanaan</div>
           </div>
+          
         </div>
       </section>
 
