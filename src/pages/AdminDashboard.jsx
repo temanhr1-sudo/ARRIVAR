@@ -84,16 +84,58 @@ export default function AdminDashboard() {
     }
   }
 
-  // 🟢 FUNGSI BARU: Manual Approve Order dari Tabel Admin
-  async function approveOrder(id) {
-    if (window.confirm('Verifikasi pembayaran dan kirim akses ke user ini?')) {
-      const { error } = await supabase.from('orders').update({ status: 'approved' }).eq('id', id);
+  // 🟢 FUNGSI UPDATE: Approve & Kirim Akses ke Email User + Telegram
+  async function approveOrder(order) {
+    if (window.confirm(`Verifikasi pembayaran dari ${order.customer_name} dan kirim akses ke email user ini?`)) {
+      const { error } = await supabase.from('orders').update({ status: 'approved' }).eq('id', order.id);
       if (error) {
         alert('Gagal Approve: ' + error.message);
       } else {
         fetchData();
-        // Opsi: Jika ingin men-trigger pengiriman Email notifikasi, panggil endpoint Vercel-mu di sini
-        // await fetch('https://arrivar.id/api/send-access-email', { method: 'POST', body: JSON.stringify({ order_id: id }) });
+        
+        // 1. Ambil Link / Akses Produk dari tabel products
+        const { data: prod } = await supabase.from('products').select('access_link').eq('name', order.product_name).single();
+        const linkAkses = prod ? prod.access_link : 'Hubungi Admin untuk link produk';
+
+        // 2. KIRIM EMAIL MENGGUNAKAN EMAILJS API
+        try {
+          const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+          const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+          const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+          if (serviceId && templateId && publicKey) {
+            await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                service_id: serviceId,
+                template_id: templateId,
+                user_id: publicKey,
+                template_params: {
+                  to_name: order.customer_name,
+                  to_email: order.customer_email,
+                  product_name: order.product_name,
+                  access_link: linkAkses
+                }
+              })
+            });
+          }
+        } catch (e) { 
+          console.error("Gagal mengirim email akses:", e); 
+        }
+
+        // 3. KIRIM NOTIFIKASI KE TELEGRAM BAHWA SUDAH DI-APPROVE
+        try {
+          const botToken = import.meta.env.VITE_TG_BOT_TOKEN;
+          const chatId = import.meta.env.VITE_TG_CHAT_ID;
+          if (botToken && chatId) {
+            const text = `✅ <b>PESANAN DISETUJUI & TERKIRIM</b>\n\n🆔 Order ID: #${order.id}\n👤 Pembeli: ${order.customer_name}\n📦 Produk: ${order.product_name}\n\nSistem telah mengirimkan produk (${linkAkses}) ke email klien.`;
+            await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ chat_id: chatId, text: text, parse_mode: "HTML" })
+            });
+          }
+        } catch (e) { console.error("Gagal kirim balik ke TG:", e); }
       }
     }
   }
@@ -355,7 +397,7 @@ export default function AdminDashboard() {
                           <a href={`https://wa.me/${o.customer_phone?.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" style={{ background: '#22C55E', color: '#FFF', padding: '0.8rem 1.5rem', borderRadius: '8px', textDecoration: 'none', fontWeight: '900', fontSize: '0.8rem', display: 'inline-block' }}>WHATSAPP</a>
                           {/* 🟢 TOMBOL APPROVE KHUSUS JIKA STATUS MASIH PENDING */}
                           {o.status !== 'approved' && (
-                            <button onClick={() => approveOrder(o.id)} style={{ background: '#0B1426', color: '#C9A84C', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '8px', fontWeight: '900', fontSize: '0.8rem', cursor: 'pointer' }}>
+                            <button onClick={() => approveOrder(o)} style={{ background: '#0B1426', color: '#C9A84C', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '8px', fontWeight: '900', fontSize: '0.8rem', cursor: 'pointer' }}>
                               ✅ APPROVE
                             </button>
                           )}

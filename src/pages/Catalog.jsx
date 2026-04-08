@@ -80,7 +80,6 @@ export default function Catalog() {
     }
   };
 
-  // 🟢 PERUBAHAN & PERBAIKAN: Fungsi Step 2 (Kirim Notif ke Telegram Admin)
   const handleConfirmPayment = async () => {
     setIsConfirming(true);
     
@@ -88,7 +87,6 @@ export default function Catalog() {
       const botToken = import.meta.env.VITE_TG_BOT_TOKEN;
       const chatId = import.meta.env.VITE_TG_CHAT_ID;
 
-      // Proteksi jika .env belum diisi/direstart
       if (!botToken || !chatId) {
         alert("Konfigurasi Telegram API belum dimasukkan di .env atau server Vite belum di-restart.");
         setIsConfirming(false);
@@ -133,21 +131,33 @@ export default function Catalog() {
     setIsConfirming(false);
   };
 
-  // Fungsi Step 3 (Polling Cek Status di Supabase)
-  const checkApprovalStatus = async () => {
+const checkApprovalStatus = async () => {
     setIsChecking(true);
     try {
-      const { data, error } = await supabase.from('orders').select('status').eq('id', orderId).single();
+      const { data: dbOrder } = await supabase.from('orders').select('status, customer_name, customer_email, product_name').eq('id', orderId).single();
       
-      if (!error && data && data.status === 'approved') {
-        alert("🎉 Pembayaran Berhasil Dikonfirmasi! Akses produk telah dikirimkan ke Email Anda.");
+      if (dbOrder && dbOrder.status === 'approved') {
+        // --- 🟢 KIRIM EMAIL JIKA ADMIN APPROVE VIA TELEGRAM ---
+        // (Logika ini berjaga-jaga jika admin approve via Telegram tapi email belum terkirim)
+        const { data: prod } = await supabase.from('products').select('access_link').eq('name', dbOrder.product_name).single();
+        
+        await fetch('/api/sendEmail', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to_email: dbOrder.customer_email,
+            to_name: dbOrder.customer_name,
+            product_name: dbOrder.product_name,
+            access_link: prod?.access_link || 'Cek dashboard'
+          })
+        });
+
+        alert("🎉 Pembayaran Dikonfirmasi! Cek email kamu sekarang.");
         setIsModalOpen(false);
       } else {
-        alert("⏳ Pembayaran Anda sedang diverifikasi. Mohon tunggu beberapa saat.");
+        alert("⏳ Belum dikonfirmasi. Mohon tunggu admin mengecek mutasi.");
       }
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
     setIsChecking(false);
   };
 
@@ -228,7 +238,7 @@ export default function Catalog() {
         </div>
       </div>
 
-      {/* MODAL CHECKOUT & PAYMENT FLOW */}
+      {/* 🟢 MODAL CHECKOUT & PAYMENT FLOW */}
       {isModalOpen && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(11, 20, 38, 0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
           <div style={{ background: '#FFF', padding: '3rem 2.5rem', borderRadius: '16px', maxWidth: '450px', width: '90%', position: 'relative' }}>
@@ -270,6 +280,7 @@ export default function Catalog() {
 
                 <div style={{ background: '#F8F9FA', padding: '1.5rem', borderRadius: '12px', border: '1px solid #EEE', marginBottom: '2rem', textAlign: 'center' }}>
                   <div style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#666', marginBottom: '1rem' }}>BAYAR CEPAT VIA QRIS</div>
+                  {/* Panggil gambar QRIS. Pastikan file qris.png ada di folder public */}
                   <img src="/qris.png" alt="QRIS Pembayaran" style={{ width: '180px', height: '180px', objectFit: 'contain', borderRadius: '12px', border: '1px solid #DDD', marginBottom: '1rem' }} />
                   <div style={{ fontSize: '0.85rem', color: '#666' }}>a.n. PT ARRIVAR INDONESIA</div>
                 </div>
