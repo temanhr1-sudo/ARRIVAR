@@ -215,9 +215,9 @@ export default function About() {
               <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', fontWeight: 700, color: 'var(--white)', marginBottom: '.5rem' }}>ARRIVAR<span style={{ color: 'var(--gold)' }}>.id</span></p>
               <p style={{ fontSize: '.9rem', lineHeight: 1.8, color: 'rgba(255,255,255,.5)', maxWidth: '300px', marginTop: '1rem' }}>Ekosistem akselerator terintegrasi untuk karir, finansial, dan startup Indonesia. Satu platform, tiga kekuatan.</p>
               <div style={{ marginTop: '1.8rem', display: 'flex', gap: '1rem' }}>
-                <a href="#" className="social-link">in</a>
-                <a href="#" className="social-link">ig</a>
-                <a href="#" className="social-link">tk</a>
+                <a href="https://www.linkedin.com/company/arrivarid" target="_blank" rel="noopener noreferrer" className="social-link">in</a>
+                <a href="https://www.instagram.com/arrivar.id" target="_blank" rel="noopener noreferrer" className="social-link">ig</a>
+                <a href="https://www.threads.com/@arrivar.id" target="_blank" rel="noopener noreferrer" className="social-link">tr</a>
               </div>
             </div>
             <div className="footer-col">
@@ -226,7 +226,7 @@ export default function About() {
                 <li><Link to="/catalog" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Katalog Produk</Link></li>
                 <li><Link to="/community" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Komunitas</Link></li>
                 <li><Link to="/services" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Layanan Jasa</Link></li>
-                <li><a href="#" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>InvestGuard App</a></li>
+                <li><a href="https://www.investguard.id" target="_blank" rel="noopener noreferrer" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>InvestGuard App</a></li>
               </ul>
             </div>
             <div className="footer-col">
@@ -235,15 +235,15 @@ export default function About() {
                 <li><Link to="/about" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Tentang Kami</Link></li>
                 <li><Link to="/about#visi" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Visi & Misi</Link></li>
                 <li><Link to="/about#tim" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Tim Kami</Link></li>
-                <li><a href="#" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Karir</a></li>
+                <li><Link to="/career" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Karir</Link></li>
               </ul>
             </div>
             <div className="footer-col">
               <h4 style={{ fontSize: '.8rem', letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1.5rem', fontWeight: 700 }}>Kontak</h4>
               <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <li><a href="mailto:hello@arrivar.id" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>hello@arrivar.id</a></li>
-                <li><a href="#" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Jakarta, Indonesia</a></li>
-                <li><a href="#" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>PT ARRIVAR INDONESIA</a></li>
+                <li><a href="mailto:admin@arrivar.id" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>admin@arrivar.id</a></li>
+                <li><a href="https://www.google.com/maps/place/PT+ARRIVAR+INDONESIA" target="_blank" rel="noopener noreferrer" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Jakarta, Indonesia</a></li>
+                <li><a href="https://www.arrivar.id" target="_blank" rel="noopener noreferrer" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>PT ARRIVAR INDONESIA</a></li>
               </ul>
             </div>
           </div>

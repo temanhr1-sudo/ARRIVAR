@@ -229,9 +229,9 @@ export default function Home() {
               <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', fontWeight: 700, color: 'var(--white)', marginBottom: '.5rem' }}>ARRIVAR<span style={{ color: 'var(--gold)' }}>.id</span></p>
               <p>Ekosistem akselerator terintegrasi untuk karir, finansial, dan startup Indonesia. Satu platform, tiga kekuatan.</p>
               <div style={{ marginTop: '1.8rem', display: 'flex', gap: '1rem' }}>
-                <a href="#" className="social-link">in</a>
-                <a href="#" className="social-link">ig</a>
-                <a href="#" className="social-link">tk</a>
+                <a href="https://www.linkedin.com/company/arrivar-id" target="_blank" rel="noopener noreferrer" className="social-link">in</a>
+                <a href="https://www.instagram.com/arrivar.id" target="_blank" rel="noopener noreferrer" className="social-link">ig</a>
+                <a href="https://www.threads.com/@arrivar.id" target="_blank" rel="noopener noreferrer" className="social-link">tr</a>
               </div>
             </div>
             <div className="footer-col">
@@ -240,7 +240,7 @@ export default function Home() {
                 <li><Link to="/catalog">Katalog Produk</Link></li>
                 <li><Link to="/community">Komunitas</Link></li>
                 <li><Link to="/services">Layanan Jasa</Link></li>
-                <li><Link to="/investguard">InvestGuard App</Link></li>
+                <li><Link to="https://www.investguard.id" target="_blank" rel="noopener noreferrer">InvestGuard App</Link></li>
               </ul>
             </div>
             <div className="footer-col">
@@ -249,15 +249,15 @@ export default function Home() {
                 <li><Link to="/about">Tentang Kami</Link></li>
                 <li><Link to="/privacy">Kebijakan Privasi</Link></li>
                 <li><Link to="/legal">Syarat & Ketentuan</Link></li>
-                <li><a href="#">Karir</a></li>
+                <li><Link to="/careers">Karir</Link></li>
               </ul>
             </div>
             <div className="footer-col">
               <h4>Kontak</h4>
               <ul>
-                <li><a href="mailto:hello@arrivar.id">hello@arrivar.id</a></li>
+                <li><a href="mailto:admin@arrivar.id">admin@arrivar.id</a></li>
                 <li><a href="#">Jakarta, Indonesia</a></li>
-                <li><a href="#">PT ARRIVAR INDONESIA</a></li>
+                <li><a href="https://www.arrivar.id">PT ARRIVAR INDONESIA</a></li>
               </ul>
             </div>
           </div>

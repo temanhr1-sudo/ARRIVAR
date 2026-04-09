@@ -130,7 +130,7 @@ export default function Career() {
               <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <li><Link to="/catalog" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>Katalog Produk</Link></li>
                 <li><Link to="/services" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>Layanan Jasa</Link></li>
-                <li><Link to="/investguard" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>InvestGuard App</Link></li>
+                <li><Link to="https://www.investguard.id" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,.5)', textDecoration: 'none' }}>InvestGuard App</Link></li>
               </ul>
             </div>
             <div className="footer-col">
@@ -143,7 +143,7 @@ export default function Career() {
             </div>
             <div className="footer-col">
               <h4 style={{ fontSize: '.8rem', color: 'var(--gold)', marginBottom: '1.5rem', fontWeight: 700 }}>Kontak</h4>
-              <p style={{ fontSize: '.9rem' }}>hello@arrivar.id<br/>Jakarta, Indonesia</p>
+              <p style={{ fontSize: '.9rem' }}>admin@arrivar.id<br/>Jakarta, Indonesia</p>
             </div>
           </div>
           <div className="footer-bottom" style={{ borderTop: '1px solid rgba(255,255,255,.08)', paddingTop: '2.5rem', textAlign: 'center' }}>
