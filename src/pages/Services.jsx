@@ -95,7 +95,22 @@ export default function Services() {
               
               {/* Jasa 1: HR */}
               <div className="reveal" style={{ background: '#F8F9FA', padding: '3rem', borderRadius: '8px', borderTop: '5px solid #1B2A4A', boxShadow: '0 10px 30px rgba(27,42,74,0.03)' }}>
-                <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '1.5rem' }}>🏢</span>
+                {/* SVG Ikon HR */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '16px', background: '#111827', marginBottom: '1.5rem', boxShadow: '0 4px 14px rgba(212, 175, 55, 0.15)' }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                    <path d="M9 22v-4h6v4"></path>
+                    <path d="M8 6h.01"></path>
+                    <path d="M16 6h.01"></path>
+                    <path d="M12 6h.01"></path>
+                    <path d="M12 10h.01"></path>
+                    <path d="M12 14h.01"></path>
+                    <path d="M16 10h.01"></path>
+                    <path d="M16 14h.01"></path>
+                    <path d="M8 10h.01"></path>
+                    <path d="M8 14h.01"></path>
+                  </svg>
+                </div>
                 <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', color: '#1B2A4A', marginBottom: '1rem' }}>Corporate HR & Talent Management</h2>
                 <p style={{ color: '#6B7590', lineHeight: 1.8, marginBottom: '2rem', fontSize: '0.95rem' }}>
                   Transformasi SDM berbasis data. Kami menyediakan jasa asesmen talenta, desain sistem kompensasi (Salary Structure), hingga program pelatihan kepemimpinan yang disesuaikan dengan industri Anda.
@@ -109,7 +124,14 @@ export default function Services() {
 
               {/* Jasa 2: Business & Finance */}
               <div className="reveal" style={{ background: '#F8F9FA', padding: '3rem', borderRadius: '8px', borderTop: '5px solid #C9A84C', boxShadow: '0 10px 30px rgba(27,42,74,0.03)' }}>
-                <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '1.5rem' }}>🤝</span>
+                {/* SVG Ikon Finansial */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '16px', background: '#111827', marginBottom: '1.5rem', boxShadow: '0 4px 14px rgba(212, 175, 55, 0.15)' }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                  </svg>
+                </div>
                 <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', color: '#1B2A4A', marginBottom: '1rem' }}>Strategic Business & Finance</h2>
                 <p style={{ color: '#6B7590', lineHeight: 1.8, marginBottom: '2rem', fontSize: '0.95rem' }}>
                   Konsultasi tingkat eksekutif untuk market analysis, go-to-market strategy, serta audit kondisi keuangan komprehensif untuk merancang roadmap bisnis dan investasi yang aman.
@@ -123,7 +145,15 @@ export default function Services() {
 
               {/* Jasa 3: Startup */}
               <div className="reveal" style={{ background: '#F8F9FA', padding: '3rem', borderRadius: '8px', borderTop: '5px solid #1B2A4A', boxShadow: '0 10px 30px rgba(27,42,74,0.03)' }}>
-                <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '1.5rem' }}>💡</span>
+                {/* SVG Ikon Startup */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '16px', background: '#111827', marginBottom: '1.5rem', boxShadow: '0 4px 14px rgba(212, 175, 55, 0.15)' }}>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+                    <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+                    <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+                    <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+                  </svg>
+                </div>
                 <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', color: '#1B2A4A', marginBottom: '1rem' }}>Startup Incubation & Accelerator</h2>
                 <p style={{ color: '#6B7590', lineHeight: 1.8, marginBottom: '2rem', fontSize: '0.95rem' }}>
                   Menjembatani inovasi dengan kapital. Program intensif untuk validasi produk (PMF), pengembangan operasional, hingga persiapan pitching untuk mendapatkan pendanaan modal ventura.

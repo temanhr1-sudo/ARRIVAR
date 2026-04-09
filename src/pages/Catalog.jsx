@@ -181,12 +181,10 @@ const checkApprovalStatus = async () => {
       </Helmet>
 
       <nav style={{ position: 'sticky', top: 0, background: '#FFF', borderBottom: '1px solid rgba(201,168,76,0.2)', padding: '1rem 5vw', zIndex: 100, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Link to="/" className="nav-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1B2A4A' }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold, #D4AF37)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 22L12 2l8 20"></path>
-            <path d="M8 14h8"></path>
-          </svg>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.4rem', fontWeight: 700 }}>ARRIVAR<em style={{ color: '#C9A84C', fontStyle: 'normal' }}>.id</em></span>
+        <Link to="/" className="nav-logo">
+          {/* LOGO ASLI + TEKS ARRIVAR */}
+          <img src="/logo.png" alt="ARRIVAR Logo" style={{ height: '34px', width: 'auto', objectFit: 'contain' }} />
+          <span>ARRIVAR<em>.id</em></span>
         </Link>
       </nav>
 

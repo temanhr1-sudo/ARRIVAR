@@ -84,46 +84,37 @@ export default function AdminDashboard() {
     }
   }
 
-  // 🟢 FUNGSI UPDATE: Approve & Kirim Akses ke Email User + Telegram
-  async function approveOrder(order) {
-    if (window.confirm(`Verifikasi pembayaran dari ${order.customer_name} dan kirim akses ke email user ini?`)) {
+async function approveOrder(order) {
+    if (window.confirm(`Verifikasi pembayaran dari ${order.customer_name}?`)) {
       const { error } = await supabase.from('orders').update({ status: 'approved' }).eq('id', order.id);
+      
       if (error) {
         alert('Gagal Approve: ' + error.message);
       } else {
         fetchData();
         
-        // 1. Ambil Link / Akses Produk dari tabel products
-        const { data: prod } = await supabase.from('products').select('access_link').eq('name', order.product_name).single();
-        const linkAkses = prod ? prod.access_link : 'Hubungi Admin untuk link produk';
-
-        // 2. KIRIM EMAIL MENGGUNAKAN EMAILJS API
+        // --- 🟢 LOGIKA PENGIRIMAN EMAIL OTOMATIS ---
         try {
-          const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-          const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-          const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+          // Ambil link produk dulu dari database
+          const { data: prod } = await supabase.from('products').select('access_link').eq('name', order.product_name).single();
+          const linkAkses = prod ? prod.access_link : 'Silakan hubungi admin';
 
-          if (serviceId && templateId && publicKey) {
-            await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                service_id: serviceId,
-                template_id: templateId,
-                user_id: publicKey,
-                template_params: {
-                  to_name: order.customer_name,
-                  to_email: order.customer_email,
-                  product_name: order.product_name,
-                  access_link: linkAkses
-                }
-              })
-            });
-          }
-        } catch (e) { 
-          console.error("Gagal mengirim email akses:", e); 
+          // Tembak ke API Backend kita
+          await fetch('/api/sendEmail', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              to_email: order.customer_email,
+              to_name: order.customer_name,
+              product_name: order.product_name,
+              access_link: linkAkses
+            })
+          });
+          alert('Berhasil di-approve! Produk sudah terkirim ke email pembeli.');
+        } catch (e) {
+          console.error("Gagal kirim email:", e);
         }
-
+      
         // 3. KIRIM NOTIFIKASI KE TELEGRAM BAHWA SUDAH DI-APPROVE
         try {
           const botToken = import.meta.env.VITE_TG_BOT_TOKEN;
@@ -245,12 +236,10 @@ export default function AdminDashboard() {
         </nav>
 
         <div style={{ padding: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <Link to="/" className="nav-logo" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#FFF' }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gold, #D4AF37)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 22L12 2l8 20"></path>
-            <path d="M8 14h8"></path>
-          </svg>
-          <span>ARRIVAR<em style={{ color: '#C9A84C', fontStyle: 'normal' }}>.id</em></span>
+        <Link to="/" className="nav-logo">
+          {/* LOGO ASLI + TEKS ARRIVAR */}
+          <img src="/logo.png" alt="ARRIVAR Logo" style={{ height: '34px', width: 'auto', objectFit: 'contain' }} />
+          <span>ARRIVAR<em>.id</em></span>
         </Link>
         </div>
       </aside>

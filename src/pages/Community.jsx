@@ -32,7 +32,7 @@ export default function Community() {
             <span style={{ fontSize: '.75rem', fontWeight: 700, letterSpacing: '.2em', textTransform: 'uppercase', color: '#C9A84C' }}>Ekosistem Kolaborasi</span>
             <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '3.5rem', color: '#1B2A4A', margin: '1rem 0' }}>Komunitas <em style={{ fontStyle: 'italic', color: '#C9A84C' }}>ARRIVAR</em></h1>
             <p style={{ color: '#8B95A8', maxWidth: '650px', margin: '0 auto', lineHeight: 1.8, fontSize: '1.1rem' }}>
-              Ruang diskusi eksklusif untuk para profesional, investor, dan founder startup. Bangun *networking* berkualitas dan akselerasi mimpimu bersama ribuan talenta terbaik Indonesia.
+              Ruang diskusi eksklusif untuk para profesional, investor, dan founder startup. Bangun <em style={{ fontStyle: 'italic' }}>networking</em> berkualitas dan akselerasi mimpimu bersama ribuan talenta terbaik Indonesia.
             </p>
           </div>
           
@@ -40,7 +40,13 @@ export default function Community() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', marginBottom: '5rem' }}>
             
             <div style={{ background: '#FFF', padding: '2.5rem', borderRadius: '8px', border: '1px solid rgba(201,168,76,0.2)', boxShadow: '0 10px 30px rgba(27,42,74,0.03)', transition: 'transform 0.3s', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>💼</div>
+              {/* PERUBAHAN: Icon SVG Tas Kerja (HR) */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '16px', background: '#111827', marginBottom: '1.5rem', boxShadow: '0 4px 14px rgba(212, 175, 55, 0.15)' }}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+              </div>
               <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', color: '#1B2A4A', marginBottom: '1rem' }}>Karir & HR Hub</h2>
               <p style={{ color: '#6B7590', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: '2rem' }}>Bagikan pengalaman interview, tips negosiasi gaji, dan strategi pengembangan skill untuk menjadi top talent incaran perusahaan.</p>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(201,168,76,0.15)', paddingTop: '1.5rem' }}>
@@ -50,7 +56,13 @@ export default function Community() {
             </div>
 
             <div style={{ background: '#FFF', padding: '2.5rem', borderRadius: '8px', border: '1px solid rgba(201,168,76,0.2)', boxShadow: '0 10px 30px rgba(27,42,74,0.03)', transition: 'transform 0.3s', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>📈</div>
+              {/* PERUBAHAN: Icon SVG Grafik (Financial) */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '16px', background: '#111827', marginBottom: '1.5rem', boxShadow: '0 4px 14px rgba(212, 175, 55, 0.15)' }}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                  <polyline points="16 7 22 7 22 13"></polyline>
+                </svg>
+              </div>
               <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', color: '#1B2A4A', marginBottom: '1rem' }}>Financial & InvestGuard</h2>
               <p style={{ color: '#6B7590', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: '2rem' }}>Bahas manajemen portofolio, review reksa dana, analisa saham, dan maksimalkan penggunaan aplikasi InvestGuard.</p>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(201,168,76,0.15)', paddingTop: '1.5rem' }}>
@@ -60,7 +72,15 @@ export default function Community() {
             </div>
 
             <div style={{ background: '#FFF', padding: '2.5rem', borderRadius: '8px', border: '1px solid rgba(201,168,76,0.2)', boxShadow: '0 10px 30px rgba(27,42,74,0.03)', transition: 'transform 0.3s', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
-              <div style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>🚀</div>
+              {/* PERUBAHAN: Icon SVG Roket (Startup) */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '16px', background: '#111827', marginBottom: '1.5rem', boxShadow: '0 4px 14px rgba(212, 175, 55, 0.15)' }}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+                  <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+                  <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+                  <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+                </svg>
+              </div>
               <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', color: '#1B2A4A', marginBottom: '1rem' }}>Startup Founders</h2>
               <p style={{ color: '#6B7590', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: '2rem' }}>Networking antar founder, cari tech/business co-founder, dan pelajari strategi rahasia pitching ke Venture Capital.</p>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(201,168,76,0.15)', paddingTop: '1.5rem' }}>
