@@ -230,7 +230,7 @@ export default function Services() {
               <div style={{ marginTop: '1.8rem', display: 'flex', gap: '1rem' }}>
                 <a href="https://www.linkedin.com/company/arrivar" className="social-link" target="_blank" rel="noopener noreferrer">in</a>
                 <a href="https://www.instagram.com/arrivar.id" className="social-link" target="_blank" rel="noopener noreferrer">ig</a>
-                <a href="https://www.twitter.com/arrivarid" className="social-link" target="_blank" rel="noopener noreferrer">tr</a>
+                <a href="https://www.threads.com/@arrivar.id" target="_blank" rel="noopener noreferrer" className="social-link">tr</a>
               </div>
             </div>
             <div className="footer-col">
