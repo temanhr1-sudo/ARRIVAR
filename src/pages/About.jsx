@@ -2,259 +2,263 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
+const css = `
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  :root{--navy:#00182A;--navy-mid:#0D2940;--gold:#D4AF37;--gold-dim:#B8962E;--white:#FFFFFF;--off-white:#F4F6F9;--slate:#394B5A;--slate-light:#A7B8C6;--ff:'Poppins',sans-serif;--radius-sm:6px;--radius-md:12px;--radius-lg:20px;--tr:0.3s cubic-bezier(0.4,0,0.2,1);}
+  html{scroll-behavior:smooth;}body{font-family:var(--ff);background:var(--off-white);color:var(--navy);-webkit-font-smoothing:antialiased;}
+  #navbar{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 4rem;background:var(--navy);border-bottom:1px solid rgba(212,175,55,.12);transition:padding var(--tr),box-shadow var(--tr);}
+  #navbar.scrolled{padding:.7rem 4rem;box-shadow:0 6px 32px rgba(0,0,0,.5);}
+  .nav-logo{display:flex;align-items:center;gap:.55rem;text-decoration:none;}
+  .nav-logo img{height:30px;width:auto;object-fit:contain;}
+  .nav-logo span{font-size:1.2rem;font-weight:800;letter-spacing:.04em;color:var(--white);}
+  .nav-logo em{color:var(--gold);font-style:normal;}
+  .nav-links{display:flex;align-items:center;gap:1.8rem;list-style:none;}
+  .nav-links a{color:var(--slate-light);font-size:.74rem;font-weight:500;text-decoration:none;letter-spacing:.07em;text-transform:uppercase;transition:color var(--tr);}
+  .nav-links a:hover{color:var(--gold);}
+  .nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:.48rem 1.25rem!important;border-radius:var(--radius-sm)!important;font-weight:700!important;}
+  .page-hero{background:var(--navy);padding:10rem 4rem 6rem;text-align:center;position:relative;overflow:hidden;}
+  .page-hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(212,175,55,.04) 59px,rgba(212,175,55,.04) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(212,175,55,.04) 59px,rgba(212,175,55,.04) 60px);}
+  .page-hero-inner{position:relative;z-index:1;max-width:780px;margin:0 auto;}
+  .eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:block;}
+  .page-hero h1{font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:800;line-height:1.1;color:var(--white);letter-spacing:-.015em;margin-bottom:1.5rem;}
+  .page-hero h1 em{color:var(--gold);font-style:normal;}
+  .page-hero p{font-size:1rem;line-height:1.85;color:var(--slate-light);max-width:580px;margin:0 auto;}
+  .accent-bar{width:48px;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-dim));border-radius:2px;margin:1.5rem auto;}
+  .section{padding:6rem 0;}.container{max-width:1200px;margin:0 auto;padding:0 4rem;}
+  .section-title{font-size:clamp(1.8rem,3.5vw,2.75rem);font-weight:800;line-height:1.15;color:var(--navy);margin-bottom:1rem;}
+  .section-title em{color:var(--gold);font-style:normal;}
+  .section-title.light{color:var(--white);}
+  .gold-bar{width:48px;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-dim));border-radius:2px;margin-bottom:1.5rem;}
+  .gold-bar.center{margin-left:auto;margin-right:auto;}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1);}
+  .reveal.visible{opacity:1;transform:none;}
+  .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+  .quote-card{background:var(--navy);border:1px solid rgba(212,175,55,.2);border-radius:var(--radius-lg);padding:2.75rem 2.25rem;position:relative;}
+  .quote-card::before{content:'"';position:absolute;top:-1.5rem;left:2rem;font-size:6rem;color:var(--gold);opacity:.18;font-family:Georgia,serif;line-height:1;}
+  .quote-text{font-size:1.05rem;font-weight:500;line-height:1.85;color:var(--white);font-style:italic;}
+  .quote-meta{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);}
+  .quote-name{font-size:.95rem;font-weight:700;color:var(--white);}
+  .quote-role{font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+  .vision-section{background:var(--off-white);border-top:1px solid rgba(212,175,55,.12);border-bottom:1px solid rgba(212,175,55,.12);}
+  .vision-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+  .vcard{background:var(--white);border:1px solid rgba(0,24,42,.07);border-radius:var(--radius-lg);padding:2.75rem 2.25rem;transition:transform var(--tr),box-shadow var(--tr),border-color var(--tr);}
+  .vcard:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,24,42,.1);border-color:var(--gold);}
+  .vcard-icon{font-size:2rem;margin-bottom:1.25rem;display:block;}
+  .vcard h3{font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:.9rem;}
+  .vcard p,.vcard-body{font-size:.875rem;line-height:1.8;color:var(--slate);}
+  .mlist{list-style:none;display:flex;flex-direction:column;gap:.9rem;margin-top:.5rem;}
+  .mlist li{display:flex;align-items:flex-start;gap:.75rem;font-size:.875rem;line-height:1.7;color:var(--slate);}
+  .mcheck{width:18px;height:18px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.1rem;}
+  .values-section{background:var(--navy);position:relative;overflow:hidden;}
+  .values-section::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(212,175,55,.04) 59px,rgba(212,175,55,.04) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(212,175,55,.04) 59px,rgba(212,175,55,.04) 60px);}
+  .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;position:relative;z-index:1;}
+  .vval{border:1px solid rgba(212,175,55,.15);border-radius:var(--radius-md);padding:2rem 1.75rem;}
+  .vval-num{font-size:2.5rem;font-weight:900;color:rgba(212,175,55,.15);line-height:1;margin-bottom:1rem;}
+  .vval-title{font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.6rem;}
+  .vval-body{font-size:.82rem;line-height:1.75;color:var(--slate-light);}
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;}
+  .tcard{background:var(--white);border:1px solid rgba(0,24,42,.07);border-radius:var(--radius-lg);padding:2.5rem 2rem;text-align:center;transition:transform var(--tr),box-shadow var(--tr),border-color var(--tr);}
+  .tcard:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,24,42,.1);border-color:var(--gold);}
+  .tavatar{width:90px;height:90px;border-radius:50%;background:var(--navy);margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;border:3px solid rgba(212,175,55,.3);}
+  .tname{font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.3rem;}
+  .trole{font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;}
+  .tbio{font-size:.82rem;line-height:1.75;color:var(--slate);}
+  footer{background:#000f1a;color:var(--slate-light);padding:5rem 0 2rem;}
+  .footer-inner{max-width:1200px;margin:0 auto;padding:0 4rem;}
+  .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:4rem;}
+  .fbrand-name{font-size:1.5rem;font-weight:800;color:var(--white);margin-bottom:.7rem;}
+  .fbrand-name span{color:var(--gold);}
+  .fbrand>p{font-size:.82rem;line-height:1.8;max-width:270px;}
+  .fsocials{display:flex;gap:.7rem;margin-top:1.5rem;}
+  .social-link{width:34px;height:34px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;text-transform:uppercase;color:var(--slate-light);text-decoration:none;transition:border-color var(--tr),color var(--tr),background var(--tr);}
+  .social-link:hover{border-color:var(--gold);color:var(--gold);background:rgba(212,175,55,.08);}
+  .fcol h4{font-size:.67rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--white);margin-bottom:1.2rem;}
+  .fcol ul{list-style:none;display:flex;flex-direction:column;gap:.58rem;}
+  .fcol ul li a{font-size:.8rem;color:var(--slate-light);text-decoration:none;transition:color var(--tr);}
+  .fcol ul li a:hover{color:var(--gold);}
+  .fbottom{border-top:1px solid rgba(255,255,255,.06);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;font-size:.74rem;color:rgba(167,184,198,.45);}
+  .fbottom span{color:var(--gold);}
+  .scroll-top{position:fixed;bottom:2rem;right:2rem;z-index:999;width:44px;height:44px;border-radius:var(--radius-sm);background:var(--gold);color:var(--navy);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;opacity:0;transform:translateY(12px);transition:opacity var(--tr),transform var(--tr);pointer-events:none;}
+  .scroll-top.visible{opacity:1;transform:none;pointer-events:all;}
+  .scroll-top:hover{background:var(--gold-dim);}
+  @media(max-width:960px){#navbar{padding:1rem 1.5rem;}.nav-links{display:none;}.container{padding:0 1.5rem;}.page-hero{padding:8rem 1.5rem 5rem;}.story-grid,.vision-grid,.team-grid,.values-grid{grid-template-columns:1fr;}.footer-top{grid-template-columns:1fr 1fr;}.fbottom{flex-direction:column;gap:.5rem;text-align:center;}}
+  @media(max-width:600px){.footer-top{grid-template-columns:1fr;}}
+`;
+
+const IcoHR = () => <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+const IcoFin = () => <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M8 11l3 3 5-5"/></svg>;
+const IcoRkt = () => <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>;
+
+const TEAM = [
+  { name:'Ari', role:'Founder & CEO', bio:'HR professional dengan spesialisasi pengembangan organisasi dan talent management. Pencetus visi ekosistem 3 pilar ARRIVAR.', icon:<IcoHR/> },
+  { name:'Aisha L.', role:'Head of FinTech', bio:'Pakar teknologi finansial dan AI. Memimpin pengembangan InvestGuard — platform wealth forecasting berbasis kecerdasan buatan.', icon:<IcoFin/> },
+  { name:'Baskara', role:'VP Startup Ecosystem', bio:'Berpengalaman di industri Venture Capital. Bertanggung jawab kurasi dan pendampingan startup dalam ekosistem ARRIVAR.', icon:<IcoRkt/> },
+];
+const VALUES = [
+  { num:'01', title:'Data-Driven', body:'Setiap keputusan dan rekomendasi kami didasarkan pada data dan analisis terukur, bukan asumsi belaka.' },
+  { num:'02', title:'Holistic Growth', body:'Pertumbuhan sejati mencakup karir, finansial, dan bisnis secara bersamaan dalam satu ekosistem yang saling mendukung.' },
+  { num:'03', title:'Impact First', body:'Dampak nyata bagi masyarakat Indonesia selalu menjadi prioritas utama di atas segalanya dalam setiap produk kami.' },
+];
+
 export default function About() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    // Fungsi untuk scroll ke elemen spesifik jika ada hash (#visi, #tim)
     if (location.hash) {
-      const element = document.getElementById(location.hash.substring(1));
-      if (element) {
-        setTimeout(() => {
-          const yOffset = -80;
-          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        }, 100);
-      }
-    } else {
-      window.scrollTo(0, 0);
-    }
-
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
-      setShowScrollTop(window.scrollY > 400);
-    };
-    window.addEventListener('scroll', handleScroll);
-
-    const revealObs = new IntersectionObserver((entries) => {
-      entries.forEach((e, i) => {
-        if (e.isIntersecting) { 
-          setTimeout(() => e.target.classList.add('visible'), i * 80); 
-          revealObs.unobserve(e.target); 
-        }
-      });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-
-    return () => window.removeEventListener('scroll', handleScroll);
+      const el = document.getElementById(location.hash.substring(1));
+      if (el) setTimeout(() => { const y = el.getBoundingClientRect().top + window.pageYOffset - 100; window.scrollTo({ top: y, behavior: 'smooth' }); }, 100);
+    } else { window.scrollTo(0, 0); }
+    const handle = () => { setIsScrolled(window.scrollY > 40); setShowScrollTop(window.scrollY > 400); };
+    window.addEventListener('scroll', handle);
+    const obs = new IntersectionObserver((entries) => entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); obs.unobserve(e.target); } }), { threshold: 0.07 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    return () => window.removeEventListener('scroll', handle);
   }, [location]);
-
-  // SCHEMA MARKUP UNTUK SEO GOOGLE (ORGANIZATION TYPE)
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "PT ARRIVAR INDONESIA",
-    "alternateName": "ARRIVAR.id",
-    "url": "https://arrivar.id",
-    "logo": "https://arrivar.id/logo.png",
-    "description": "Ekosistem akselerator terintegrasi terdepan di Indonesia yang menjembatani kesenjangan antara kompetensi profesional, kemandirian finansial, dan pertumbuhan bisnis inovatif.",
-    "foundingDate": "2026",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Jakarta",
-      "addressCountry": "ID"
-    },
-    "sameAs": [
-      "https://www.linkedin.com/company/arrivar-id",
-      "https://www.instagram.com/arrivar.id"
-    ]
-  };
 
   return (
     <>
+      <style>{css}</style>
       <Helmet>
-        <title>Tentang Kami, Visi & Tim | ARRIVAR.id</title>
-        <meta name="description" content="Kenali PT ARRIVAR INDONESIA. Kami adalah ekosistem pertama yang mensinergikan Career Development, Financial Intelligence, dan Startup Funding di Indonesia." />
-        <meta name="keywords" content="Tentang ARRIVAR, Visi Misi ARRIVAR, Profil Perusahaan Ekosistem Karir Finansial, Startup Indonesia" />
-        <script type="application/ld+json">
-          {JSON.stringify(organizationSchema)}
-        </script>
+        <title>Tentang Kami — Visi, Misi & Tim | ARRIVAR.id</title>
+        <meta name="description" content="Kenali PT ARRIVAR INDONESIA. Ekosistem digital pertama yang mensinergikan Career Development, Financial Intelligence, dan Startup Funding di Indonesia." />
       </Helmet>
 
-      {/* NAVBAR */}
       <nav id="navbar" className={isScrolled ? 'scrolled' : ''}>
-        <Link to="/" className="nav-logo">
-          {/* LOGO ASLI + TEKS ARRIVAR */}
-          <img src="/logo.png" alt="ARRIVAR Logo" style={{ height: '34px', width: 'auto', objectFit: 'contain' }} />
-          <span>ARRIVAR<em>.id</em></span>
-        </Link>
+        <Link to="/" className="nav-logo"><img src="/logo.png" alt="ARRIVAR Logo" /><span>ARRIVAR<em>.id</em></span></Link>
         <ul className="nav-links">
           <li><Link to="/">Beranda</Link></li>
-          <li><Link to="/catalog">Katalog Produk</Link></li>
-          <li><Link to="/services">Layanan Jasa</Link></li>
+          <li><Link to="/catalog">Katalog</Link></li>
+          <li><Link to="/services">Layanan</Link></li>
           <li><Link to="/community">Komunitas</Link></li>
           <li><a href="#kontak" className="nav-cta">Hubungi Kami</a></li>
         </ul>
       </nav>
 
-      <div style={{ background: '#FFF', minHeight: '100vh', fontFamily: "'DM Sans', sans-serif" }}>
-        
-        {/* HERO SECTION ABOUT */}
-        <section style={{ padding: '10rem 5vw 6rem', textAlign: 'center', background: 'var(--navy-deep)', color: '#FFF', borderBottom: '5px solid var(--gold)' }}>
-          <div className="reveal" style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <span style={{ fontSize: '.75rem', fontWeight: 700, letterSpacing: '.2em', textTransform: 'uppercase', color: '#C9A84C' }}>Tentang PT ARRIVAR INDONESIA</span>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '4rem', margin: '1.5rem 0' }}>Empowering Indonesia's <em style={{ fontStyle: 'italic', color: '#C9A84C' }}>Future</em></h1>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.15rem', lineHeight: 1.8 }}>
-              Kami percaya bahwa kesuksesan finansial tidak bisa dipisahkan dari kapabilitas karir dan inovasi bisnis. Oleh karena itu, ARRIVAR hadir sebagai ekosistem holistik pertama di Indonesia.
-            </p>
-          </div>
-        </section>
+      <section className="page-hero">
+        <div className="page-hero-inner">
+          <span className="eyebrow reveal">Tentang PT ARRIVAR INDONESIA</span>
+          <h1 className="reveal">Kami Membangun <em>Indonesia yang Lebih Maju</em></h1>
+          <div className="accent-bar reveal" />
+          <p className="reveal">ARRIVAR didirikan atas keyakinan bahwa pertumbuhan sejati lahir ketika karir, finansial, dan bisnis berkembang bersama — dalam satu ekosistem yang saling mendukung dan terintegrasi.</p>
+        </div>
+      </section>
 
-        {/* KISAH KAMI */}
-        <section style={{ padding: '6rem 5vw' }}>
-          <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
+      <section className="section" style={{background:'#fff'}}>
+        <div className="container">
+          <div className="story-grid">
+            <div>
+              <span className="eyebrow reveal">Latar Belakang</span>
+              <h2 className="section-title reveal">Mengapa <em>ARRIVAR</em> Hadir?</h2>
+              <div className="gold-bar reveal" />
+              <p style={{fontSize:'.93rem',lineHeight:1.85,color:'var(--slate)',marginBottom:'1.5rem'}} className="reveal">Banyak profesional bekerja keras setiap hari namun merasa karirnya stagnan dan kondisi finansialnya tidak berkembang. Di sisi lain, para inovator muda sering terhenti karena kurangnya arah bisnis dan akses pendanaan yang tepat.</p>
+              <p style={{fontSize:'.93rem',lineHeight:1.85,color:'var(--slate)'}} className="reveal">ARRIVAR.id hadir untuk memecahkan kebuntuan tersebut. Melalui pendekatan berbasis data dan AI, kami mengakselerasi profesional dan bisnis Indonesia menuju kemandirian yang sesungguhnya.</p>
+            </div>
             <div className="reveal">
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2.8rem', color: '#1B2A4A', marginBottom: '1.5rem' }}>Mengapa <em style={{ color: '#C9A84C', fontStyle: 'italic' }}>ARRIVAR?</em></h2>
-              <div style={{ width: '70px', height: '3px', background: 'linear-gradient(90deg, #C9A84C, #E2C878)', margin: '1.5rem 0', borderRadius: '2px' }}></div>
-              <p style={{ color: '#5A6580', fontSize: '1.05rem', lineHeight: 1.8, marginBottom: '1.5rem' }}>
-                Realitanya, banyak profesional bekerja keras setiap hari namun merasa karirnya stagnan dan kondisi finansialnya tidak berkembang. Di sisi lain, para inovator muda seringkali memiliki ide brilian namun terhenti karena kurangnya arah bisnis dan akses pendanaan.
-              </p>
-              <p style={{ color: '#5A6580', fontSize: '1.05rem', lineHeight: 1.8 }}>
-                <strong>ARRIVAR.id</strong> didirikan untuk memecahkan kebuntuan tersebut. Melalui pendekatan berbasis data dan kecerdasan buatan (AI), misi kami adalah mengakselerasi masyarakat dan profesional Indonesia menuju kemandirian finansial sejati, tanpa harus kehilangan arah.
-              </p>
-            </div>
-            <div className="reveal" style={{ background: '#F8F9FA', padding: '3rem', borderRadius: '8px', border: '1px solid rgba(201,168,76,0.2)', position: 'relative' }}>
-              <div style={{ position: 'absolute', top: '-20px', left: '-20px', fontSize: '4rem', color: 'rgba(201,168,76,0.2)', fontFamily: "serif" }}>"</div>
-              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', color: '#1B2A4A', lineHeight: 1.4, fontStyle: 'italic', position: 'relative', zIndex: 2 }}>
-                Goal kami cuma satu: Membantu kamu mencapai Kebebasan Finansial secepat mungkin, dengan membangun fundamental karir dan bisnis yang tepat.
-              </h3>
-              <div style={{ marginTop: '2rem', borderTop: '1px solid rgba(201,168,76,0.2)', paddingTop: '1rem' }}>
-                <strong style={{ color: '#1B2A4A', display: 'block' }}>Ari</strong>
-                <span style={{ color: '#C9A84C', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700 }}>Founder & CEO ARRIVAR</span>
+              <div className="quote-card">
+                <p className="quote-text">"Goal kami cuma satu: membantu kamu mencapai kebebasan finansial secepat mungkin, dengan membangun fundamental karir dan bisnis yang tepat."</p>
+                <div className="quote-meta"><div className="quote-name">Ari</div><div className="quote-role">Founder & CEO, ARRIVAR</div></div>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* VISI & MISI */}
-        <section id="visi" className="section vision" style={{ background: '#F8F9FA', padding: '6rem 5vw', position: 'relative', borderTop: '1px solid rgba(201,168,76,0.15)', borderBottom: '1px solid rgba(201,168,76,0.15)' }}>
-          <div style={{ maxWidth: '1150px', margin: '0 auto' }}>
-            <div className="reveal" style={{ textAlign: 'center', marginBottom: '4rem' }}>
-              <p style={{ fontSize: '.75rem', fontWeight: 700, letterSpacing: '.2em', textTransform: 'uppercase', color: '#C9A84C' }}>Landasan Kami</p>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '3rem', color: '#1B2A4A', marginTop: '0.5rem' }}>Visi & Misi</h2>
-              <div style={{ width: '70px', height: '3px', background: 'linear-gradient(90deg, #C9A84C, #E2C878)', margin: '1.5rem auto', borderRadius: '2px' }}></div>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '3rem' }}>
-              <div className="reveal" style={{ background: '#FFF', padding: '3rem', borderRadius: '8px', border: '1px solid rgba(201,168,76,0.2)', boxShadow: '0 10px 30px rgba(27,42,74,0.03)' }}>
-                <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '1.5rem' }}>👁️</span>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2rem', color: '#1B2A4A', marginBottom: '1rem' }}>Visi Perseroan</h3>
-                <p style={{ color: '#6B7590', fontSize: '1.05rem', lineHeight: 1.8 }}>
-                  "Menjadi ekosistem akselerator terintegrasi terdepan di Indonesia yang menjembatani kesenjangan antara kompetensi profesional, kemandirian finansial, dan pertumbuhan bisnis inovatif."
-                </p>
-              </div>
-
-              <div className="reveal" style={{ background: '#FFF', padding: '3rem', borderRadius: '8px', border: '1px solid rgba(201,168,76,0.2)', boxShadow: '0 10px 30px rgba(27,42,74,0.03)' }}>
-                <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '1.5rem' }}>🎯</span>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '2rem', color: '#1B2A4A', marginBottom: '1rem' }}>Misi Perseroan</h3>
-                <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-                  <li style={{ display: 'flex', gap: '1rem', color: '#1B2A4A', fontSize: '0.95rem', lineHeight: 1.6, fontWeight: 500 }}>
-                    <span style={{ color: '#C9A84C' }}>✓</span> Menyelenggarakan jasa pelatihan dan bimbingan karir profesional untuk meningkatkan daya saing tenaga kerja nasional.
-                  </li>
-                  <li style={{ display: 'flex', gap: '1rem', color: '#1B2A4A', fontSize: '0.95rem', lineHeight: 1.6, fontWeight: 500 }}>
-                    <span style={{ color: '#C9A84C' }}>✓</span> Mengembangkan platform digital dan AI (seperti InvestGuard) untuk literasi dan manajemen finansial.
-                  </li>
-                  <li style={{ display: 'flex', gap: '1rem', color: '#1B2A4A', fontSize: '0.95rem', lineHeight: 1.6, fontWeight: 500 }}>
-                    <span style={{ color: '#C9A84C' }}>✓</span> Bertindak sebagai fasilitator antara startup inovatif dan akses pendanaan modal ventura.
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* TIM KAMI */}
-        <section id="tim" style={{ padding: '6rem 5vw' }}>
-          <div style={{ maxWidth: '1150px', margin: '0 auto' }}>
-            <div className="reveal" style={{ textAlign: 'center', marginBottom: '4rem' }}>
-              <p style={{ fontSize: '.75rem', fontWeight: 700, letterSpacing: '.2em', textTransform: 'uppercase', color: '#C9A84C' }}>Para Ahli di Balik Layar</p>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '3rem', color: '#1B2A4A', marginTop: '0.5rem' }}>Tim Kepemimpinan</h2>
-              <div style={{ width: '70px', height: '3px', background: 'linear-gradient(90deg, #C9A84C, #E2C878)', margin: '1.5rem auto', borderRadius: '2px' }}></div>
-              <p style={{ color: '#5A6580', maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>Dibangun oleh profesional berpengalaman lintas industri yang memiliki dedikasi untuk memajukan ekosistem ekonomi Indonesia.</p>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2.5rem' }}>
-              
-              {/* Member 1 */}
-              <div className="reveal" style={{ textAlign: 'center' }}>
-                <div style={{ width: '150px', height: '150px', borderRadius: '50%', background: 'linear-gradient(135deg, #1B2A4A, #243660)', margin: '0 auto 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C9A84C', fontSize: '3rem', border: '5px solid #F5EDD4' }}>👨‍💼</div>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.6rem', color: '#1B2A4A', marginBottom: '0.2rem' }}>Ari</h3>
-                <p style={{ color: '#C9A84C', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>Founder & CEO</p>
-                <p style={{ color: '#6B7590', fontSize: '0.9rem', lineHeight: 1.6 }}>HR Professional dengan spesialisasi pengembangan organisasi. Memiliki visi membangun ekosistem 3 pilar yang berkelanjutan.</p>
-              </div>
-
-              {/* Member 2 */}
-              <div className="reveal" style={{ textAlign: 'center' }}>
-                <div style={{ width: '150px', height: '150px', borderRadius: '50%', background: 'linear-gradient(135deg, #1B2A4A, #243660)', margin: '0 auto 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C9A84C', fontSize: '3rem', border: '5px solid #F5EDD4' }}>👩‍💻</div>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.6rem', color: '#1B2A4A', marginBottom: '0.2rem' }}>Aisha L.</h3>
-                <p style={{ color: '#C9A84C', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>Head of FinTech (InvestGuard)</p>
-                <p style={{ color: '#6B7590', fontSize: '0.9rem', lineHeight: 1.6 }}>Pakar teknologi finansial & AI. Memastikan setiap algoritma wealth forecasting di InvestGuard akurat dan aman.</p>
-              </div>
-
-              {/* Member 3 */}
-              <div className="reveal" style={{ textAlign: 'center' }}>
-                <div style={{ width: '150px', height: '150px', borderRadius: '50%', background: 'linear-gradient(135deg, #1B2A4A, #243660)', margin: '0 auto 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C9A84C', fontSize: '3rem', border: '5px solid #F5EDD4' }}>👨‍💻</div>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.6rem', color: '#1B2A4A', marginBottom: '0.2rem' }}>Baskara</h3>
-                <p style={{ color: '#C9A84C', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>VP of Startup Ecosystem</p>
-                <p style={{ color: '#6B7590', fontSize: '0.9rem', lineHeight: 1.6 }}>Berpengalaman di industri Venture Capital. Bertanggung jawab dalam proses kurasi dan inkubasi para founder inovatif.</p>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-      </div>
-
-      {/* FOOTER UTUH */}
-      <footer id="kontak">
-        <div className="footer-inner" style={{ maxWidth: '1150px', margin: '0 auto' }}>
-          <div className="footer-top" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: '4rem', marginBottom: '5rem' }}>
-            <div className="footer-brand">
-              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.8rem', fontWeight: 700, color: 'var(--white)', marginBottom: '.5rem' }}>ARRIVAR<span style={{ color: 'var(--gold)' }}>.id</span></p>
-              <p style={{ fontSize: '.9rem', lineHeight: 1.8, color: 'rgba(255,255,255,.5)', maxWidth: '300px', marginTop: '1rem' }}>Ekosistem akselerator terintegrasi untuk karir, finansial, dan startup Indonesia. Satu platform, tiga kekuatan.</p>
-              <div style={{ marginTop: '1.8rem', display: 'flex', gap: '1rem' }}>
-                <a href="https://www.linkedin.com/company/arrivarid" target="_blank" rel="noopener noreferrer" className="social-link">in</a>
-                <a href="https://www.instagram.com/arrivar.id" target="_blank" rel="noopener noreferrer" className="social-link">ig</a>
-                <a href="https://www.threads.com/@arrivar.id" target="_blank" rel="noopener noreferrer" className="social-link">tr</a>
-              </div>
-            </div>
-            <div className="footer-col">
-              <h4 style={{ fontSize: '.8rem', letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1.5rem', fontWeight: 700 }}>Ekosistem</h4>
-              <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <li><Link to="/catalog" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Katalog Produk</Link></li>
-                <li><Link to="/community" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Komunitas</Link></li>
-                <li><Link to="/services" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Layanan Jasa</Link></li>
-                <li><a href="https://www.investguard.id" target="_blank" rel="noopener noreferrer" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>InvestGuard App</a></li>
-              </ul>
-            </div>
-            <div className="footer-col">
-              <h4 style={{ fontSize: '.8rem', letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1.5rem', fontWeight: 700 }}>Perusahaan</h4>
-              <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <li><Link to="/about" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Tentang Kami</Link></li>
-                <li><Link to="/about#visi" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Visi & Misi</Link></li>
-                <li><Link to="/about#tim" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Tim Kami</Link></li>
-                <li><Link to="/career" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Karir</Link></li>
-              </ul>
-            </div>
-            <div className="footer-col">
-              <h4 style={{ fontSize: '.8rem', letterSpacing: '.15em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '1.5rem', fontWeight: 700 }}>Kontak</h4>
-              <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <li><a href="mailto:admin@arrivar.id" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>admin@arrivar.id</a></li>
-                <li><a href="https://www.google.com/maps/place/PT+ARRIVAR+INDONESIA" target="_blank" rel="noopener noreferrer" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>Jakarta, Indonesia</a></li>
-                <li><a href="https://www.arrivar.id" target="_blank" rel="noopener noreferrer" style={{ fontSize: '.9rem', color: 'rgba(255,255,255,.5)', textDecoration: 'none', transition: 'all .3s' }}>PT ARRIVAR INDONESIA</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="footer-bottom" style={{ borderTop: '1px solid rgba(255,255,255,.08)', paddingTop: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
-            <p style={{ fontSize: '.85rem', color: 'rgba(255,255,255,.5)' }}>© 2026 <span style={{ color: 'var(--gold)', fontWeight: 500 }}>PT ARRIVAR INDONESIA</span>. All rights reserved.</p>
-            <p style={{ fontSize: '.85rem', color: 'rgba(255,255,255,.5)' }}>Empowering Indonesia's Future — <span style={{ color: 'var(--gold)', fontWeight: 500 }}>Career · Financial · Startup</span></p>
           </div>
         </div>
-      </footer>
+      </section>
 
-      <button className={`scroll-top ${showScrollTop ? 'visible' : ''}`} onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>↑</button>
+      <section className="section vision-section" id="visi">
+        <div className="container">
+          <div style={{textAlign:'center',maxWidth:620,margin:'0 auto 4rem'}}>
+            <span className="eyebrow reveal">Landasan Perseroan</span>
+            <h2 className="section-title reveal">Visi &amp; <em>Misi</em></h2>
+            <div className="gold-bar center reveal" />
+          </div>
+          <div className="vision-grid">
+            <div className="vcard reveal">
+              <span className="vcard-icon">🎯</span>
+              <h3>Visi Perseroan</h3>
+              <p>Menjadi ekosistem akselerator terintegrasi terdepan di Indonesia yang menjembatani kesenjangan antara kompetensi profesional, kemandirian finansial, dan pertumbuhan bisnis inovatif.</p>
+            </div>
+            <div className="vcard reveal">
+              <span className="vcard-icon">🚀</span>
+              <h3>Misi Perseroan</h3>
+              <ul className="mlist">
+                {['Menyelenggarakan jasa pelatihan dan bimbingan karir untuk meningkatkan daya saing tenaga kerja nasional','Mengembangkan platform digital berbasis AI untuk literasi dan manajemen finansial masyarakat Indonesia','Bertindak sebagai fasilitator antara startup inovatif dan akses pendanaan modal ventura','Membangun solusi digital berkualitas tinggi (website, aplikasi, tools) untuk individu dan korporat'].map((t,i)=>(
+                  <li key={i}><span className="mcheck"/>{t}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section values-section">
+        <div className="container">
+          <div style={{textAlign:'center',maxWidth:580,margin:'0 auto 4rem',position:'relative',zIndex:1}}>
+            <span className="eyebrow reveal">Prinsip Kami</span>
+            <h2 className="section-title light reveal">Nilai yang <em>Kami Pegang</em></h2>
+            <div className="gold-bar center reveal" />
+          </div>
+          <div className="values-grid">
+            {VALUES.map(v=>(
+              <div className="vval reveal" key={v.num}>
+                <div className="vval-num">{v.num}</div>
+                <div className="vval-title">{v.title}</div>
+                <div className="vval-body">{v.body}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section" id="tim" style={{background:'#fff'}}>
+        <div className="container">
+          <div style={{textAlign:'center',maxWidth:620,margin:'0 auto 4rem'}}>
+            <span className="eyebrow reveal">Para Ahli di Balik Layar</span>
+            <h2 className="section-title reveal">Tim <em>Kepemimpinan</em></h2>
+            <div className="gold-bar center reveal" />
+            <p style={{fontSize:'.93rem',lineHeight:1.85,color:'var(--slate)',margin:'0 auto'}} className="reveal">Dibangun oleh profesional berpengalaman lintas industri dengan dedikasi penuh untuk memajukan ekosistem ekonomi Indonesia.</p>
+          </div>
+          <div className="team-grid">
+            {TEAM.map(m=>(
+              <div className="tcard reveal" key={m.name}>
+                <div className="tavatar">{m.icon}</div>
+                <div className="tname">{m.name}</div>
+                <div className="trole">{m.role}</div>
+                <p className="tbio">{m.bio}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section" id="kontak" style={{background:'var(--off-white)',borderTop:'1px solid rgba(212,175,55,.12)'}}>
+        <div className="container">
+          <div className="reveal" style={{textAlign:'center',maxWidth:640,margin:'0 auto'}}>
+            <span className="eyebrow">Bergabung Bersama Kami</span>
+            <h2 className="section-title">Siap Tumbuh Bersama <em>ARRIVAR</em>?</h2>
+            <div className="gold-bar center" />
+            <p style={{fontSize:'.93rem',lineHeight:1.85,color:'var(--slate)',maxWidth:520,margin:'0 auto 2.5rem'}}>Baik sebagai klien, mitra, atau bagian dari tim — pintu ARRIVAR selalu terbuka untuk kolaborasi yang bermakna.</p>
+            <div style={{display:'flex',gap:'1rem',justifyContent:'center',flexWrap:'wrap'}}>
+              <Link to="/catalog" style={{display:'inline-flex',alignItems:'center',background:'var(--gold)',color:'var(--navy)',fontFamily:'var(--ff)',fontWeight:700,fontSize:'.82rem',letterSpacing:'.07em',textTransform:'uppercase',padding:'.9rem 2.1rem',borderRadius:'var(--radius-sm)',textDecoration:'none'}}>Lihat Katalog →</Link>
+              <a href="mailto:admin@arrivar.id" style={{display:'inline-flex',alignItems:'center',background:'transparent',color:'var(--navy)',fontFamily:'var(--ff)',fontWeight:600,fontSize:'.82rem',letterSpacing:'.07em',textTransform:'uppercase',padding:'.9rem 2.1rem',borderRadius:'var(--radius-sm)',border:'1.5px solid rgba(0,24,42,.2)',textDecoration:'none'}}>Hubungi Kami</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div className="footer-inner">
+          <div className="footer-top">
+            <div className="fbrand"><div className="fbrand-name">ARRIVAR<span>.id</span></div><p>Ekosistem digital pertama di Indonesia untuk karir, finansial, dan startup — dalam satu platform terintegrasi.</p><div className="fsocials"><a href="https://www.linkedin.com/company/arrivar-id" target="_blank" rel="noopener noreferrer" className="social-link">in</a><a href="https://www.instagram.com/arrivar.id" target="_blank" rel="noopener noreferrer" className="social-link">ig</a><a href="https://www.threads.com/@arrivar.id" target="_blank" rel="noopener noreferrer" className="social-link">tr</a></div></div>
+            <div className="fcol"><h4>Ekosistem</h4><ul><li><Link to="/catalog">Katalog Produk</Link></li><li><Link to="/community">Komunitas</Link></li><li><Link to="/services">Layanan Jasa</Link></li><li><a href="https://www.investguard.id" target="_blank" rel="noopener noreferrer">InvestGuard App</a></li></ul></div>
+            <div className="fcol"><h4>Perusahaan</h4><ul><li><Link to="/about">Tentang Kami</Link></li><li><Link to="/privacy">Kebijakan Privasi</Link></li><li><Link to="/legal">Syarat &amp; Ketentuan</Link></li><li><Link to="/career">Karir</Link></li></ul></div>
+            <div className="fcol"><h4>Kontak</h4><ul><li><a href="mailto:admin@arrivar.id">admin@arrivar.id</a></li><li><a href="#">Jakarta, Indonesia</a></li><li><a href="https://www.arrivar.id">PT ARRIVAR INDONESIA</a></li></ul></div>
+          </div>
+          <div className="fbottom"><p>© 2026 <span>PT ARRIVAR INDONESIA</span>. All rights reserved.</p><p>Empowering Indonesia's Future — <span>Career · Financial · Startup</span></p></div>
+        </div>
+      </footer>
+      <button className={`scroll-top${showScrollTop?' visible':''}`} onClick={()=>window.scrollTo({top:0,behavior:'smooth'})}>↑</button>
     </>
   );
 }
